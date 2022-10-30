@@ -1,5 +1,7 @@
 package dev.ssouza;
 
+import dev.ssouza.domain.Message;
+import dev.ssouza.publish.Publisher;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.Packet;
 

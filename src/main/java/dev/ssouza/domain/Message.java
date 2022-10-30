@@ -1,4 +1,4 @@
-package dev.ssouza;
+package dev.ssouza.domain;
 
 public class Message {
     private String header;

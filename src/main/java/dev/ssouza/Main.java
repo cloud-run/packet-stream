@@ -1,5 +1,7 @@
 package dev.ssouza;
 
+import dev.ssouza.publish.ConsolePublisher;
+import dev.ssouza.publish.Publisher;
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapNativeException;
 
