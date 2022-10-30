@@ -1,55 +1,18 @@
 package dev.ssouza;
 
-import org.pcap4j.core.*;
-import org.pcap4j.packet.Packet;
-import org.pcap4j.util.NifSelector;
+import org.pcap4j.core.NotOpenException;
+import org.pcap4j.core.PcapNativeException;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.net.UnknownHostException;
 
 public class Main {
-    public static void main(String[] args) throws PcapNativeException {
-        PcapNetworkInterface nif;
-        try {
-            nif = new NifSelector().selectNetworkInterface();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+    private static final int COUNT = 5;
 
-        if (nif == null) {
-            return;
-        }
+    public static void main(String[] args) throws PcapNativeException, UnknownHostException, NotOpenException {
+        final Publisher publisher = new ConsolePublisher();
+        final Sniffer sniffer = new Sniffer(publisher);
 
-        System.out.println(nif.getName() + "(" + nif.getDescription() + ")");
-
-        final PcapHandle handle = nif.openLive(65536, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 10);
-
-        PacketListener listener =
-                new PacketListener() {
-                    @Override
-                    public void gotPacket(Packet packet) {
-                        System.out.println(handle.getTimestamp());
-
-                        System.out.println("start a heavy task");
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-
-                        }
-                        System.out.println("done");
-                    }
-                };
-
-        try {
-            ExecutorService pool = Executors.newCachedThreadPool();
-            handle.loop(5, listener, pool); // This is better than handle.loop(5, listener);
-            pool.shutdown();
-        } catch (InterruptedException | NotOpenException e) {
-            e.printStackTrace();
-        }
-
-        handle.close();
+        sniffer.start();
     }
+
 }
