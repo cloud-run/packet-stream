@@ -18,7 +18,7 @@ public class Sniffer {
     }
 
     public void start() throws PcapNativeException, UnknownHostException {
-        final InetAddress addr = InetAddress.getByName("192.168.15.4");
+        final InetAddress addr = InetAddress.getByName("192.168.15.3");
         final PcapNetworkInterface nif = Pcaps.getDevByAddress(addr);
 
         System.out.println(nif.getName() + "(" + nif.getDescription() + ")");
